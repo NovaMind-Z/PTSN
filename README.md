@@ -4,7 +4,7 @@ This repository contains the reference code for the paper "Progressive Tree-Stru
   <img src="images/framework.png" alt="Progressive Tree-Structured Prototype Network" width="850"/>
 </p>
 
-PTSN also achieves *No.2* on the COCO image captioning online [ leaderboard ](https://competitions.codalab.org/competitions/3221#results). More information will be released soon.
+PTSN also achieves *No.2* on the COCO image captioning online [ leaderboard ](https://competitions.codalab.org/competitions/3221#results) (Team name is CMG). More information will be released soon.
 
 ## Environment setup
 ## Data preparation
