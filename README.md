@@ -5,6 +5,7 @@ This repository contains the reference code for the paper "Progressive Tree-Stru
 </p>
 PTSN also achieves **No.2** on the COCO image captioning online [leaderboard](OFA also achieves No.1 on the COCO image
 captioning online). More information will be released soon.
+
 ## Environment setup
 ## Data preparation
 ## Training procedure
