@@ -4,12 +4,8 @@ This repository contains the reference code for the paper "Progressive Tree-Stru
   <img src="images/framework.png" alt="Progressive Tree-Structured Prototype Network" width="850"/>
 </p>
 More information will be released soon.
+
 ## Environment setup
-
-
 ## Data preparation
-
-
 ## Training procedure
-
 ## Evaluation
