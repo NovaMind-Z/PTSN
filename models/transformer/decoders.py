@@ -45,7 +45,7 @@ class TransformerDecoderLayer(Module):
                  self_att_module=None, enc_att_module=None, self_att_module_kwargs=None, enc_att_module_kwargs=None):
         super(TransformerDecoderLayer, self).__init__()
         self.d_model = d_model
-        weight = torch.load('./clip_embeds.pth')['clip_embeds'].float()
+        weight = torch.load('./word_embeds.pth')['word_embeds'].float()
         self.word_emb = nn.Embedding.from_pretrained(weight, freeze=True)
         self.pos_emb = nn.Embedding.from_pretrained(sinusoid_encoding_table(max_len + 1, d_model, 0), freeze=True)
         self.layers = ModuleList(
