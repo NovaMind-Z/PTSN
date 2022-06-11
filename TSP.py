@@ -5,7 +5,7 @@ import torch
 import nltk
 import clip
 
-N_A = ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP']
+N_A = ['JJ', 'JJR', 'JJS', 'NN', 'NNS', 'NNP', 'VB']
 
 if __name__ == '__main__':
 
