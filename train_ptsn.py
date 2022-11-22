@@ -8,7 +8,7 @@ from evaluation import PTBTokenizer, Cider
 from models.transformer import Transformer, TransformerDecoderLayer
 from models.transformer.encoder_entry import build_encoder
 from models.transformer.optimi_entry  import build_optimizer
-from models.transformer.conceptencoders import BaseEncoder, PAEncoder
+from models.transformer.conceptencoders import PAEncoder
 
 import torch
 from torch.optim import Adam
@@ -66,9 +66,8 @@ def evaluate_metrics(model, dataloader, text_field, e, device):
     with tqdm(desc='Epoch %d - evaluation' % e, unit='it', total=len(dataloader), disable=device!=0) as pbar:
         for it, (images, caps_gt) in enumerate(iter(dataloader)):
             images = images.to(device)
-            tail_labels = tail_labels.to(tail_labels)
             with torch.no_grad():
-                out, _ = model(mode='rl', images=images, tails=tail_labels, max_len=20, eos_idx=text_field.vocab.stoi['<eos>'], beam_size=5, out_size=1)
+                out, _ = model(mode='rl', images=images, max_len=20, eos_idx=text_field.vocab.stoi['<eos>'], beam_size=5, out_size=1)
             caps_gen = text_field.decode(out, join_words=False)
             for i, (gts_i, gen_i) in enumerate(zip(caps_gt, caps_gen)):
                 gen_i = ' '.join([k for k, g in itertools.groupby(gen_i)])
@@ -211,7 +210,7 @@ def train(rank, worldSize, args):
 
     # DDP Model and dataloaders
     backbone = build_encoder(args)
-    encoder = PAEncoder(d_model=512)
+    encoder = PAEncoder(d_in=args.d_in, d_model=512)
     decoder = TransformerDecoderLayer(len(text_field.vocab), 54, 3, text_field.vocab.stoi['<pad>'], d_model=512)
     torch.cuda.set_device(rank)
     model = Transformer(text_field.vocab.stoi['<bos>'], backbone, decoder, encoder)
@@ -466,7 +465,6 @@ def train(rank, worldSize, args):
 
 
 if __name__ == '__main__':
-    # device = torch.device('cuda')
     parser = argparse.ArgumentParser(description='Progressive Tree-Structured prototype Network')
     parser.add_argument('--exp_name', type=str, default='swintransformer_base_texthiproto2000-800')
     parser.add_argument('--batch_size', type=int, default=50)
@@ -478,14 +476,10 @@ if __name__ == '__main__':
     parser.add_argument('--resume_last', type=bool, default=False)
     parser.add_argument('--resume_best', action='store_true')
 
-    parser.add_argument('--features_path', type=str)
-    parser.add_argument('--annotation_folder', type=str, default='~/data/dataset/coco_caption/annotations')
-
     parser.add_argument('--logs_folder', type=str, default='tensorboard_logs')
     parser.add_argument('--xe_least', type=int, default=15)
     parser.add_argument('--xe_most', type=int, default=20)
     parser.add_argument('--refine_epoch_rl', type=int, default=28)
-
     parser.add_argument('--xe_base_lr', type=float, default=0.0001)
     parser.add_argument('--rl_base_lr', type=float, default=5e-6)
 
@@ -497,17 +491,21 @@ if __name__ == '__main__':
     parser.add_argument('--REPROB', type=float, default=0.25)
     parser.add_argument('--REMODE', type=str, default='pixel')
     parser.add_argument('--RECOUNT', type=int, default=1)
+    parser.add_argument('--num_gpus', type=int, default=4)
+    parser.add_argument('--d_in', type=int, default=1024)
     parser.add_argument('--INTERPOLATION', type=str, default='bicubic')
     parser.add_argument('--TESTCROP', type=bool, default=True)
     parser.add_argument('--img_root_path', type=str, default='~/data/dataset/coco_caption/IMAGE_COCO')
-    parser.add_argument('--tail_path', type=str, default='~/data/dataset/coco_caption/tail_anno.pth')
-    parser.add_argument('--swin_resume_path', type=str, default='~/data/swin_base_patch4_window7_224_22k.pth')
+    parser.add_argument('--annotation_folder', type=str, default='~/data/dataset/coco_caption/annotations')
+    parser.add_argument('--backbone_resume_path', type=str, default='~/data/resume_model/swin_base_patch4_window7_224_22k.pth')
+    parser.add_argument('--backbone_name', type=str, default='swin_base_patch4_window7_224_22k')
 
     args = parser.parse_args()
     print(args)
 
+
     ## DDP Training
-    worldSize = 4
+    worldSize = args.num_gpus
     _changeConfig(args, worldSize)
     print('\nDistribute config', args)
     mp.spawn(train, (worldSize, args), worldSize)

@@ -11,11 +11,11 @@ if __name__ == '__main__':
 
     def HClustering(concept_features, k):
         kmeans = KMeans(n_clusters=k, init='random').fit(concept_features)
-        centers = kmeans.cluster_centers_  # [10, 512]
-        hyper_labels = kmeans.labels_  # [7997,]
+        centers = kmeans.cluster_centers_
+        hyper_labels = kmeans.labels_
         return centers, hyper_labels
 
-    # CLIP based word clustering
+    ### CLIP based word embedding
     vocab = pickle.load(open('./vocab.pkl', 'rb'))
     concepts = []
     for k in vocab.itos[4:]:
@@ -39,38 +39,26 @@ if __name__ == '__main__':
 
     np.save('./concept_features.npy', concept_features)
 
-    # It was used for 2000, 800, 400
+
+    ### CLIP based hierarchical clustering
+
+    # create 2000 prototypes
+    hyper_centers_dict = {}
     concept_features = np.load('./concept_features.npy')
-    hyper_centers_dict  = torch.load('./hyper_centers.pth')
     centers, labels = HClustering(concept_features, 2000)
     hyper_centers_dict['hyper2k'] = torch.tensor(centers).float()
-    torch.save(hyper_centers_dict, './hyper_centers.pth')
-
-    hyper_vocab = {}
-    for i, k in enumerate(concepts):
-        hyper_vocab[k] = labels[i]
-    torch.save(hyper_vocab, './hyper2k_vocab.pth')
+    torch.save(hyper_centers_dict, './hyper_protos.pth')
 
 
-
-
-    # CLIP based hierarchical clustering
     # 2000->800
 
-    centers  = torch.load('./hyper_centers_.pth')['hyper2k']
-
+    centers  = torch.load('./hyper_protos.pth')['hyper2k']
     centers_2, labels_2 = HClustering(centers, 800)
 
-    temp = torch.load('./hyper_centers.pth')
+    temp = torch.load('./hyper_protos.pth')
     temp['hyper2k-800'] =  torch.tensor(centers_2).float()
-    torch.save(temp, './hyper_centers.pth')
+    torch.save(temp, './hyper_protos.pth')
 
-    hyper_concepts = {}
-    for k in range(len(centers)):
-        hyper_id = labels_2[k]
-        hyper_concepts[str(hyper_id)] = [k] if not str(hyper_id) in hyper_concepts else hyper_concepts[str(hyper_id)] + [k]
-    torch.save(hyper_concepts, './hyper2k-800_concepts.pth')
-
-    print('end')
+    print('successfuly build 2k-800 prototypes')
 
 
