@@ -7,7 +7,7 @@ This repository contains the reference code for the <b>ACM MM2022</b> paper "Pro
 </p>
 
 <p align="center">
-<a href="https://dl.acm.org/doi/abs/10.1145/3503161.3548024" target="_blank">Paper Access </a> |<a href="https://competitions.codalab.org/competitions/3221#results"> MSCOCO Leaderboard </a> | <a href="https://pan.baidu.com/s/1SSIj7HnFH79GzgERm9aDcA" target="_blank">Baidu Disk </a>
+<a href="https://dl.acm.org/doi/abs/10.1145/3503161.3548024" target="_blank">Paper Access </a> |<a href="https://competitions.codalab.org/competitions/3221#results"> MSCOCO Leaderboard (TeamName:CMG) </a> | <a href="https://pan.baidu.com/s/1SSIj7HnFH79GzgERm9aDcA" target="_blank">Baidu Disk </a>
 </p>
 
 
@@ -52,7 +52,7 @@ sh test_ptsn.sh
 
 ## Training procedure
 To train a Swin-B version of our PTSN model, do the following two steps:
-1. modify the /path/to/data in ./test_ptsn.sh into $DataPath
+1. modify the /path/to/data in ./train_ptsn.sh into $DataPath
 2. please run the code below:
 ```bash
 cd ./PTSN
