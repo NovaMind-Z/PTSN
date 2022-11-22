@@ -7,7 +7,7 @@ This repository contains the reference code for the <b>ACM MM2022</b> paper "Pro
 </p>
 
 <p align="center">
-<a href="https://dl.acm.org/doi/abs/10.1145/3503161.3548024" target="_blank">Paper Access </a> |<a href="https://competitions.codalab.org/competitions/3221#results"> MSCOCO Leaderboard </a> | <a href="https://pan.baidu.com/s/1SSIj7HnFH79GzgERm9aDcA" target="_blank">Baidu Disk </a>
+<a href="https://dl.acm.org/doi/abs/10.1145/3503161.3548024" target="_blank">Paper Access </a> |<a href="https://competitions.codalab.org/competitions/3221#results"> MSCOCO Leaderboard (TeamName:CMG) </a> | <a href="https://pan.baidu.com/s/1SSIj7HnFH79GzgERm9aDcA" target="_blank">Baidu Disk </a>
 </p>
 
 
