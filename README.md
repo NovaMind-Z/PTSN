@@ -52,7 +52,7 @@ sh test_ptsn.sh
 
 ## Training procedure
 To train a Swin-B version of our PTSN model, do the following two steps:
-1. modify the /path/to/data in ./test_ptsn.sh into $DataPath
+1. modify the /path/to/data in ./train_ptsn.sh into $DataPath
 2. please run the code below:
 ```bash
 cd ./PTSN
