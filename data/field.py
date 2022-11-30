@@ -235,7 +235,6 @@ class TextField(RawField):
         self.truncate_first = truncate_first
         self.vocab = None
         self.vectors = vectors
-        self.attr_vocab = pickle.load(open('./all_vocab1000.pkl', 'rb'))
         if nopoints:
             self.punctuations.append("..")
 
